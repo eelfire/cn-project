@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: eyeperf
+  labels:
+    org: empire
+    class: eyeperf
+    app.kubernetes.io/name: eyeperf
+spec:
+  containers:
+  - name: spaceship
+    image: clearlinux/iperf
+    imagePullPolicy: IfNotPresent

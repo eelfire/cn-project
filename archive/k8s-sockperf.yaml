@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sockperf-server-deployment
+  labels:
+    app.kubernetes.io/name: sockperf-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      org: empire
+      class: sockperf-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sockperf-server
+        org: empire
+        class: sockperf-server
+    spec:
+      containers:
+      - name: sockperf-server
+        image: socker
+        imagePullPolicy: IfNotPresent
+        args: ['-sr']
+        ports:
+        - containerPort: 6969
+          name: server
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sockperf-server
+spec:
+  selector:
+    org: empire
+    class: sockperf-server
+  ports:
+  - protocol: UDP
+    port: 6969
+    targetPort: server
+    name: server
+    
+---
+    
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sockperf-client
+  labels:
+    app.kubernetes.io/name: sockperf-client
+    org: alliance
+    class: sockperf-client
+spec:
+  containers:
+  - name: sockperf-client
+    image: socker
+    imagePullPolicy: IfNotPresent
+    command: ['/bin/sh', '-c', 'sleep 1d']

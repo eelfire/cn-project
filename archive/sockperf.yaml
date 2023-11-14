@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: socker
+  labels:
+    org: empire
+    class: socker
+    app.kubernetes.io/name: socker
+spec:
+  containers:
+  - name: shock
+    image: socker
+    imagePullPolicy: IfNotPresent

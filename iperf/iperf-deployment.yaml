@@ -1,0 +1,29 @@
+# https://github.com/InfuseAI/k8s-iperf/blob/master/k8s-iperf.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf-server-deployment
+  labels:
+    app.kubernetes.io/name: iperf-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      org: empire
+      class: iperf-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: iperf-server
+        org: empire
+        class: iperf-server
+    spec:
+      containers:
+        - name: iperf3-server
+          image: mlabbe/iperf
+          args: ["-s"]
+          ports:
+            - containerPort: 5001
+              name: server
+      terminationGracePeriodSeconds: 0

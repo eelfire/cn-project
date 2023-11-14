@@ -1,0 +1,15 @@
+# Use Alpine Linux as the base image
+FROM alpine:3.16
+
+# Install required dependencies
+RUN apk add --no-cache build-base git autoconf automake linux-headers perl g++ make libtool m4 libexecinfo-dev
+
+# Clone Sockperf repository
+RUN git clone https://github.com/Mellanox/sockperf.git
+
+# Build Sockperf
+WORKDIR /sockperf
+RUN ./autogen.sh && cat ./configure && ./configure && make && make install
+
+# Set the entry point
+# ENTRYPOINT ["./sockperf"]
